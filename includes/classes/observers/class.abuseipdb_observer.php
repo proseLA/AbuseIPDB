@@ -90,7 +90,7 @@ class abuseipdb_observer extends base {
 				error_log('Blacklist File Path: ' . $blacklist_file_path);
 				error_log('Redirect Option: ' . $redirect_option);
             }
-			
+
 			// Do not execute the check for the 'page_not_found' page
 			if ($redirect_option === 'page_not_found') {
 				if ($current_page_base == 'page_not_found') {
@@ -116,10 +116,10 @@ class abuseipdb_observer extends base {
 			if ($blacklist_enable && file_exists($blacklist_file_path)) {
 			$file_blocked_ips = file($blacklist_file_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 			}
-			
+
 			// Check if the IP is manually blocked
 			$ip_blocked = false;
-			
+
 			// First, check in the blocked_ips array
 			if (in_array($ip, $blocked_ips)) {
 			$ip_blocked = true;
@@ -141,6 +141,7 @@ class abuseipdb_observer extends base {
 			}
 
                 $log_file_name = 'abuseipdb_blocked_' . date('Y_m') . '.log';
+                $log_file_name = 'abuseipdb_blocked' . '.log';
                 $log_file_path = ABUSEIPDB_LOG_FILE_PATH . $log_file_name;
                 $log_message_cache = date('Y-m-d H:i:s') . ' IP address ' . $ip . ' blocked by blacklist: ' . $abuseScore . PHP_EOL;
 
@@ -165,7 +166,7 @@ class abuseipdb_observer extends base {
 						$log_file_path_spiders = $log_file_path . $log_file_name_spiders;
 						$log_message = date('Y-m-d H:i:s') . ' IP address ' . $ip . ' is identified as a Spider. AbuseIPDB API check was bypassed.' . PHP_EOL;
 
-					if ($spider_log_enabled == 'true') {			
+					if ($spider_log_enabled == 'true') {
 						file_put_contents($log_file_path_spiders, $log_message, FILE_APPEND);
 					}
 
@@ -186,6 +187,7 @@ class abuseipdb_observer extends base {
 
                 if ($abuseScore >= $threshold || ($test_mode && in_array($ip, $test_ips))) {
                     $log_file_name = 'abuseipdb_blocked_cache_' . date('Y_m') . '.log';
+                    $log_file_name = 'abuseipdb_blocked_cache' . '.log';
                     $log_file_path = ABUSEIPDB_LOG_FILE_PATH . $log_file_name;
                     $log_message_cache = date('Y-m-d H:i:s') . ' IP address ' . $ip . ' blocked from database cache with score: ' . $abuseScore . PHP_EOL;
 
@@ -228,6 +230,7 @@ class abuseipdb_observer extends base {
 
 				if ($abuseScore >= $threshold) {
 					$log_file_name = 'abuseipdb_blocked_' . date('Y_m') . '.log';
+                    $log_file_name = 'abuseipdb_blocked' . '.log';
 					$log_file_path = ABUSEIPDB_LOG_FILE_PATH . $log_file_name;
 					$log_message = date('Y-m-d H:i:s') . ' IP address ' . $ip . ' blocked by AbuseIPDB from API call with score: ' . $abuseScore . PHP_EOL;
 
